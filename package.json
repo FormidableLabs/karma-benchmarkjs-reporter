@@ -1,6 +1,6 @@
 {
   "name": "karma-benchmarkjs-reporter",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "A customizable reporter for karma-benchmark.",
   "main": "build/index.js",
   "files": ["build/"],
