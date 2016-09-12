@@ -65,7 +65,7 @@ Specify if you want to call the `formatSuiteSummary` function at the end of a su
 
 If you override the default formatting functions, you must ensure that your functions take into account the other configuration values (if you want to use them).
 
-[View the default formatting functions](https://github.com/FormidableLabs/karma-benchmarkjs-reporter/blob/master/default-formatting.js)
+[View the default formatting functions](https://github.com/FormidableLabs/karma-benchmarkjs-reporter/blob/master/src/default-formatting.js)
 
 ##### Argument Descriptions
 - `suiteName` : The name of the suite.
