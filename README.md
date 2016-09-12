@@ -16,21 +16,28 @@ module.exports = function(config) {
     reporters: ["benchmark"],
     // optional configuration object :
     benchmarkReporter: {
-      terminalWidth: 80,
-      hzWidth: 5,
-      showBrowser: true,
-      browserWidth: 45,
-      formatSuiteHeading: function(suite, browser, benchConfig, chalk, _) { ... },
-      formatBenchmark: function(benchmark, browser, benchConfig, chalk, _) { ... }
+      colors: true,
+      terminalWidth: 100,
+      hzWidth: 4,
+      browserWidth: 40,
+      showBrowser: false,
+      showSuiteSummary: false,
+      formatBenchmark: function (benchmark, browser, benchConfig, helpers) { ... },
+      formatSuiteHeading: function (suite, browser, benchConfig, helpers) { ... },
+      formatSuiteSummary: function (benchmarks, browser, benchConfig, helpers) { ... }
     }
   });
 };
 ```
 
 ### Options
+#### `colors`
+*default:* `true`
+
+This value is inherited from Karma, but you can override it by specifying a boolean.
 
 #### `terminalWidth`
-*default:* `100`
+*default:* `60`
 
 The default formatting functions attempt to match this column width for each row. There is still possibility for overflow.
 
@@ -49,14 +56,22 @@ The default formatting functions use this to pad the browser name.
 
 The default formatting functions only output the browser name if set to `true`. It is useful if you are benchmarking multiple browsers.
 
+#### `showSuiteSummary`
+*default:* `false`
+
+Specify if you want to call the `formatSuiteSummary` function at the end of a suite.
+
 #### Formatting functions
 
-If you override the default formatting functions, you must ensure that your functions take into
-account the other configuration values (if you want to use them).
+If you override the default formatting functions, you must ensure that your functions take into account the other configuration values (if you want to use them).
+
+[View the default formatting functions](https://github.com/FormidableLabs/karma-benchmarkjs-reporter/blob/master/default-formatting.js)
 
 ##### Argument Descriptions
-- `suite` : `string`
-- `browser` - [see karma](https://github.com/karma-runner/karma/blob/e36ba6c1d4cad4fc321f3376129b329fe663068d/lib/browser.js#L62)
+- `suiteName` : The name of the suite.
+
+- `browser` - [see karma](https://github.com/karma-runner/karma/blob/e36ba6c1d4cad4fc321f3376129b329fe663068d/lib/browser.js#L62)  
+
   ```js
   {
     id,
@@ -67,7 +82,9 @@ account the other configuration values (if you want to use them).
     disconnectsCount
   }
   ```
-- `benchmark` - [see karma-benchmark](https://github.com/JamieMason/karma-benchmark/blob/283b76866ff65f2817fb3a0db0cc84704f7738f5/src/adapter.js#L27)
+
+- `benchmark` - [see karma-benchmark](https://github.com/JamieMason/karma-benchmark/blob/283b76866ff65f2817fb3a0db0cc84704f7738f5/src/adapter.js#L27)  
+
   ```js
   {
     name: string,
@@ -75,48 +92,42 @@ account the other configuration values (if you want to use them).
     suite: string
   }
   ```
+
+- `benchmarks` - An array of the suite's benchmarks:
+
+  ```js
+  [
+    {
+      name: string,
+      hz: number,
+      suite: string
+    },
+    // ...
+    {
+      name: string,
+      hz: number,
+      suite: string
+    }
+  ]
+  ```
+
 - `benchConfig`
+
   ```js
   {
     colors: boolean,
     terminalWidth: int,
     hzWidth: int,
-    browswerWidth: int,
+    browserWidth: int,
     showBrowser: boolean,
+    formatBenchmark: fn,
     formatSuiteHeading: fn,
-    formatBenchmark: fn
+    formatSuiteSummary: fn
   }
   ```
-- `chalk` - [Chalk api](https://github.com/chalk/chalk) "Terminal string styling done right."
-- `_` - [Lodash api](https://lodash.com/docs/) "A modern JavaScript utility library delivering modularity, performance & extras."
 
+- `helpers` - Helper libs are passed to these functions including:
 
-##### `formatSuiteHeading`
-*default:*
-```js
-function formatSuiteLine(suite, browser, benchConfig, chalk, _) {
-  return "\n" + chalk.bold.magenta(_.pad(suite, benchConfig.terminalWidth)) + "\n";
-}
-```
-
-##### `formatBenchmark`
-*default:*
-```js
-function formatBenchmark(result, browser, benchConfig, chalk, _) {
-  var name = result.benchmark.name;
-  var hz = result.benchmark.hz;
-  var browserName = _.padStart(
-    benchConfig.showBrowser ? "[" + browser.name + "]" : "",
-    benchConfig.browserWidth
-  );
-  var bullet = "- ";
-  var paddedFreq = " " + _.padStart(Math.round(hz), benchConfig.hzWidth) + " ";
-  var ops = "ops/sec";
-  var paddedName = _.padEnd(
-      name,
-      benchConfig.terminalWidth - bullet.length - paddedFreq.length - ops.length - browserName.length
-    );
-    return chalk.cyan(bullet) + paddedName + chalk.green(paddedFreq) +
-      chalk.italic.dim(ops) + chalk.blue(browserName) + "\n";
-}
-```
+  - `_` - [Lodash api](https://lodash.com/docs/) "A modern JavaScript utility library delivering modularity, performance & extras."
+  - `chalk` - [Chalk api](https://github.com/chalk/chalk) "Terminal string styling done right."
+  - `stripAnsi` - [strip-ansi](https://github.com/chalk/strip-ansi) "Strip ANSI escape codes."
