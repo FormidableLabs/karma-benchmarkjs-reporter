@@ -1,5 +1,6 @@
 "use strict";
 
+var EOL = require("os").EOL;
 var _ = require("lodash");
 var stripAnsi = require("strip-ansi");
 
@@ -50,7 +51,7 @@ var getFormattedSuiteSummary = function (benchmarks, benchConfig) {
   var summary = fastestName + " was " + timesAsFast + " times as fast as " + secondFastestName;
   var widthwithOffset = benchConfig.terminalWidth + summary.length - stripAnsi(summary).length;
 
-  return "\n" + _.pad(summary, widthwithOffset) + "\n";
+  return EOL + _.pad(summary, widthwithOffset) + EOL;
 };
 
 /**
@@ -101,8 +102,8 @@ var getFormattedSuiteSummaryByBrowser = function (suite, benchConfig) {
     );
     var formattedSuiteSummary = getFormattedSuiteSummary(benchmarks, benchConfig);
     return rows.concat([
-      "\n" + formattedBrowserName + "\n"
-      + _.trim(formattedSuiteSummary) + "\n"
+      EOL + formattedBrowserName + EOL
+      + _.trim(formattedSuiteSummary) + EOL
     ]);
   }, []).join("");
 };

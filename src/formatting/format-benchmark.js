@@ -1,5 +1,6 @@
 "use strict";
 
+var EOL = require("os").EOL;
 var _ = require("lodash");
 var stripAnsi = require("strip-ansi");
 
@@ -100,7 +101,7 @@ var formatBenchmark = function (benchmark, browser, benchConfig) {
     style
   );
 
-  return decorator + benchmarkName + hz + hzUnits + browserName + "\n";
+  return decorator + benchmarkName + hz + hzUnits + browserName + EOL;
 };
 
 module.exports = formatBenchmark;

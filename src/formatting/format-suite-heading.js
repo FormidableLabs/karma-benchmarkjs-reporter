@@ -1,5 +1,6 @@
 "use strict";
 
+var EOL = require("os").EOL;
 var _ = require("lodash");
 
 /**
@@ -23,7 +24,7 @@ var getFormattedSuiteName = function (suiteName, terminalWidth, style) {
  */
 var formatSuiteHeading = function (suiteName, browser, benchConfig) {
   var suiteHeading = getFormattedSuiteName(suiteName, benchConfig.terminalWidth, benchConfig.style);
-  return "\n" + suiteHeading + "\n";
+  return EOL + suiteHeading + EOL;
 };
 
 module.exports = formatSuiteHeading;
