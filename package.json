@@ -15,7 +15,7 @@
   },
   "homepage": "https://github.com/formidablelabs/karma-benchmarkjs-reporter",
   "scripts": {
-    "prepublish": "npm test",
+    "preversion": "npm test",
     "test": "eslint src"
   },
   "keywords": [
