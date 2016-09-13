@@ -1,46 +1,46 @@
 "use strict";
-const _ = require("lodash");
-const chalk = require("chalk");
-const stripAnsi = require("strip-ansi");
+var defaultFormatting = require("./default-formatting");
 
-const { formatBenchmark, formatSuiteHeading, formatSuiteSummary } = require("./default-formatting");
-const helperLibs = {
-  _,
-  chalk,
-  stripAnsi
+var _ = require("lodash");
+var chalk = require("chalk");
+var stripAnsi = require("strip-ansi");
+var helperLibs = {
+  _: _,
+  chalk: chalk,
+  stripAnsi: stripAnsi
 };
 
-const BenchmarkReporter = function BenchmarkReporter(baseReporterDecorator, config) {
+var BenchmarkReporter = function BenchmarkReporter(baseReporterDecorator, config) {
   baseReporterDecorator(this);
 
-  const benchConfig = _.defaults(config.benchmarkReporter, {
+  var benchConfig = _.defaults(config.benchmarkReporter, {
     colors: config.colors,
     terminalWidth: 60,
     hzWidth: 4,
     browserWidth: 40,
     showBrowser: false,
     showSuiteSummary: false,
-    formatBenchmark,
-    formatSuiteHeading,
-    formatSuiteSummary
+    formatBenchmark: defaultFormatting.formatBenchmark,
+    formatSuiteHeading: defaultFormatting.formatSuiteHeading,
+    formatSuiteSummary: defaultFormatting.formatSuiteSummary
   });
 
-  const formatWithColorConfig = (string) => {
+  var formatWithColorConfig = function (string) {
     return !benchConfig.colors
       ? chalk.stripColor(string)
       : string;
   };
 
-  const suites = {};
-  let currentSuiteName = "";
-  this.specSuccess = (browser, result) => {
-    const benchmark = result.benchmark;
-    const suiteName = benchmark.suite;
+  var suites = {};
+  var currentSuiteName = "";
+  this.specSuccess = function (browser, result) {
+    var benchmark = result.benchmark;
+    var suiteName = benchmark.suite;
 
     suites[suiteName] = suites[suiteName] || [];
     suites[suiteName].push({
-      benchmark,
-      browser
+      benchmark: benchmark,
+      browser: browser
     });
 
     if (suiteName !== currentSuiteName) {
@@ -62,7 +62,7 @@ const BenchmarkReporter = function BenchmarkReporter(baseReporterDecorator, conf
     ));
   };
 
-  this.onRunComplete = () => {
+  this.onRunComplete = function () {
     // run last suite summary
     if (benchConfig.showSuiteSummary && suites[currentSuiteName]) {
       this.write(formatWithColorConfig(
