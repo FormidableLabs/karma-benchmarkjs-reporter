@@ -1,9 +1,11 @@
 {
   "name": "karma-benchmarkjs-reporter",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "description": "A customizable reporter for karma-benchmark.",
   "main": "src/index.js",
-  "files": ["src"],
+  "files": [
+    "src"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/formidablelabs/karma-benchmarkjs-reporter.git"
