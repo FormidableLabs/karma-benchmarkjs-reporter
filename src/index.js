@@ -1,28 +1,28 @@
 "use strict";
-var defaultFormatting = require("./default-formatting");
 
 var _ = require("lodash");
 var chalk = require("chalk");
-var stripAnsi = require("strip-ansi");
-var helperLibs = {
-  _: _,
-  chalk: chalk,
-  stripAnsi: stripAnsi
-};
+var formatBenchmark = require("./formatting/format-benchmark");
+var formatSuiteHeading = require("./formatting/format-suite-heading");
+var formatSuiteSummary = require("./formatting/format-suite-summary");
+var style = require("./formatting/style");
 
 var BenchmarkReporter = function BenchmarkReporter(baseReporterDecorator, config) {
   baseReporterDecorator(this);
 
-  var benchConfig = _.defaults(config.benchmarkReporter, {
+  var benchConfig = _.defaultsDeep(config.benchmarkReporter, {
     colors: config.colors,
+    style: style,
+    decorator: "-",
     terminalWidth: 60,
     hzWidth: 4,
+    hzUnits: "ops/sec",
     browserWidth: 40,
     showBrowser: false,
     showSuiteSummary: false,
-    formatBenchmark: defaultFormatting.formatBenchmark,
-    formatSuiteHeading: defaultFormatting.formatSuiteHeading,
-    formatSuiteSummary: defaultFormatting.formatSuiteSummary
+    formatBenchmark: formatBenchmark,
+    formatSuiteHeading: formatSuiteHeading,
+    formatSuiteSummary: formatSuiteSummary
   });
 
   var formatWithColorConfig = function (string) {
@@ -46,19 +46,19 @@ var BenchmarkReporter = function BenchmarkReporter(baseReporterDecorator, config
     if (suiteName !== currentSuiteName) {
       if (benchConfig.showSuiteSummary && suites[currentSuiteName]) {
         this.write(formatWithColorConfig(
-          benchConfig.formatSuiteSummary(suites[currentSuiteName], benchConfig, helperLibs)
+          benchConfig.formatSuiteSummary(suites[currentSuiteName], benchConfig)
         ));
       }
 
       currentSuiteName = suiteName;
 
       this.write(formatWithColorConfig(
-        benchConfig.formatSuiteHeading(suiteName, browser, benchConfig, helperLibs)
+        benchConfig.formatSuiteHeading(suiteName, browser, benchConfig)
       ));
     }
 
     this.write(formatWithColorConfig(
-      benchConfig.formatBenchmark(benchmark, browser, benchConfig, helperLibs)
+      benchConfig.formatBenchmark(benchmark, browser, benchConfig)
     ));
   };
 
@@ -66,7 +66,7 @@ var BenchmarkReporter = function BenchmarkReporter(baseReporterDecorator, config
     // run last suite summary
     if (benchConfig.showSuiteSummary && suites[currentSuiteName]) {
       this.write(formatWithColorConfig(
-        benchConfig.formatSuiteSummary(suites[currentSuiteName], benchConfig, helperLibs)
+        benchConfig.formatSuiteSummary(suites[currentSuiteName], benchConfig)
       ));
     }
   };
