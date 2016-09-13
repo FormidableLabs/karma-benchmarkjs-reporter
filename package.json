@@ -3,7 +3,7 @@
   "version": "0.1.1",
   "description": "A customizable reporter for karma-benchmark.",
   "main": "src/index.js",
-  "files": ["src/"],
+  "files": ["src"],
   "repository": {
     "type": "git",
     "url": "https://github.com/formidablelabs/karma-benchmarkjs-reporter.git"
@@ -16,7 +16,7 @@
   "homepage": "https://github.com/formidablelabs/karma-benchmarkjs-reporter",
   "scripts": {
     "prepublish": "npm test",
-    "test": "eslint src/"
+    "test": "eslint src"
   },
   "keywords": [
     "karma",
