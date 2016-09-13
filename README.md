@@ -51,7 +51,7 @@ This value is inherited from Karma, but you can override it by specifying a bool
   hz: chalk.green,
   hzUnits: chalk.italic.dim,
   suite: chalk.bold.magenta
-};
+}
 ```
 
 The style object contains the styling functions for piece of data. The default uses [`chalk`](https://github.com/chalk/chalk) for styling and color.
