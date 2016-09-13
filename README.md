@@ -16,15 +16,18 @@ module.exports = function(config) {
     reporters: ["benchmark"],
     // optional configuration object :
     benchmarkReporter: {
-      colors: true,
-      terminalWidth: 100,
+      colors: config.colors,
+      style: style,
+      decorator: "-",
+      terminalWidth: 60,
       hzWidth: 4,
+      hzUnits: "ops/sec",
       browserWidth: 40,
       showBrowser: false,
       showSuiteSummary: false,
-      formatBenchmark: function (benchmark, browser, benchConfig, helpers) { ... },
-      formatSuiteHeading: function (suite, browser, benchConfig, helpers) { ... },
-      formatSuiteSummary: function (benchmarks, browser, benchConfig, helpers) { ... }
+      formatBenchmark: formatBenchmark,
+      formatSuiteHeading: formatSuiteHeading,
+      formatSuiteSummary: formatSuiteSummary
     }
   });
 };
@@ -36,6 +39,28 @@ module.exports = function(config) {
 
 This value is inherited from Karma, but you can override it by specifying a boolean.
 
+#### `style`
+*default:*
+```js
+{
+  benchmark: chalk.stripColor,
+  summaryBenchmark: chalk.underline,
+  summaryEmphasis: chalk.bold.underline,
+  browser: chalk.blue,
+  decorator: chalk.cyan,
+  hz: chalk.green,
+  hzUnits: chalk.italic.dim,
+  suite: chalk.bold.magenta
+}
+```
+
+The style object contains the styling functions for piece of data. The default uses [`chalk`](https://github.com/chalk/chalk) for styling and color.
+
+#### `decorator`
+*default:* `"-"`
+
+The decorator for the beginning of each benchmark row.
+
 #### `terminalWidth`
 *default:* `60`
 
@@ -44,7 +69,12 @@ The default formatting functions attempt to match this column width for each row
 #### `hzWidth`
 *default:* `4`
 
-The default formatting functions use this to pad the ops/sec integer.
+The default formatting functions use this to pad the formatted `hz` string.
+
+#### `hzUnits`
+*default:* `"ops/sec"`
+
+The string placed after the `hz` as units.
 
 #### `browserWidth`
 *default:* `40`
@@ -65,69 +95,29 @@ Specify if you want to call the `formatSuiteSummary` function at the end of a su
 
 If you override the default formatting functions, you must ensure that your functions take into account the other configuration values (if you want to use them).
 
-[View the default formatting functions](https://github.com/FormidableLabs/karma-benchmarkjs-reporter/blob/master/src/default-formatting.js)
+[View the default formatting functions](https://github.com/FormidableLabs/karma-benchmarkjs-reporter/blob/master/src/formatting/)
 
-##### Argument Descriptions
-- `suiteName` : The name of the suite.
+```js
+/**
+ * @param  {Object} benchmark the benchmark to be formatted
+ * @param  {Object} browser the browser associated with the benchmark
+ * @param  {Object} benchConfig the benchmarkReporter config obj
+ * @return {string} the formatted benchmark
+ */
+var formatBenchmark = function (benchmark, browser, benchConfig) {...};
 
-- `browser` - [see karma](https://github.com/karma-runner/karma/blob/e36ba6c1d4cad4fc321f3376129b329fe663068d/lib/browser.js#L62)  
+/**
+ * @param  {string} suiteName name of performance suite
+ * @param  {Object} browser browser object
+ * @param  {Object} benchConfig benchmarkReporter config object
+ * @return {string} formatted suite heading
+ */
+var formatSuiteHeading = function (suiteName, browser, benchConfig) {...};
 
-  ```js
-  {
-    id,
-    fullName,
-    name,
-    state,
-    lastResult,
-    disconnectsCount
-  }
-  ```
-
-- `benchmark` - [see karma-benchmark](https://github.com/JamieMason/karma-benchmark/blob/283b76866ff65f2817fb3a0db0cc84704f7738f5/src/adapter.js#L27)  
-
-  ```js
-  {
-    name: string,
-    hz: number,
-    suite: string
-  }
-  ```
-
-- `benchmarks` - An array of the suite's benchmarks:
-
-  ```js
-  [
-    {
-      name: string,
-      hz: number,
-      suite: string
-    },
-    // ...
-    {
-      name: string,
-      hz: number,
-      suite: string
-    }
-  ]
-  ```
-
-- `benchConfig`
-
-  ```js
-  {
-    colors: boolean,
-    terminalWidth: int,
-    hzWidth: int,
-    browserWidth: int,
-    showBrowser: boolean,
-    formatBenchmark: fn,
-    formatSuiteHeading: fn,
-    formatSuiteSummary: fn
-  }
-  ```
-
-- `helpers` - Helper libs are passed to these functions including:
-
-  - `_` - [Lodash api](https://lodash.com/docs/) "A modern JavaScript utility library delivering modularity, performance & extras."
-  - `chalk` - [Chalk api](https://github.com/chalk/chalk) "Terminal string styling done right."
-  - `stripAnsi` - [strip-ansi](https://github.com/chalk/strip-ansi) "Strip ANSI escape codes."
+/**
+ * @param  {Object[]} suite array of browserBenchmarks: `{browser: {Obj}, benchmark: {Obj}`
+ * @param  {Object} benchConfig benchmarkReporter config obj
+ * @return {string} the formatted suite summary
+ */
+var formatSuiteSummary = function (suite, benchConfig) {
+```
