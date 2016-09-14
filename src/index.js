@@ -1,7 +1,6 @@
 "use strict";
 
 var _ = require("lodash");
-var chalk = require("chalk");
 var formatBenchmark = require("./formatting/format-benchmark");
 var formatSuiteHeading = require("./formatting/format-suite-heading");
 var formatSuiteSummary = require("./formatting/format-suite-summary");
@@ -25,12 +24,6 @@ var BenchmarkReporter = function BenchmarkReporter(baseReporterDecorator, config
     formatSuiteSummary: formatSuiteSummary
   });
 
-  var formatWithColorConfig = function (string) {
-    return !benchConfig.colors
-      ? chalk.stripColor(string)
-      : string;
-  };
-
   var suites = {};
   var currentSuiteName = "";
   this.specSuccess = function (browser, result) {
@@ -45,29 +38,29 @@ var BenchmarkReporter = function BenchmarkReporter(baseReporterDecorator, config
 
     if (suiteName !== currentSuiteName) {
       if (benchConfig.showSuiteSummary && suites[currentSuiteName]) {
-        this.write(formatWithColorConfig(
+        this.write(
           benchConfig.formatSuiteSummary(suites[currentSuiteName], benchConfig)
-        ));
+        );
       }
 
       currentSuiteName = suiteName;
 
-      this.write(formatWithColorConfig(
+      this.write(
         benchConfig.formatSuiteHeading(suiteName, browser, benchConfig)
-      ));
+      );
     }
 
-    this.write(formatWithColorConfig(
+    this.write(
       benchConfig.formatBenchmark(benchmark, browser, benchConfig)
-    ));
+    );
   };
 
   this.onRunComplete = function () {
     // run last suite summary
     if (benchConfig.showSuiteSummary && suites[currentSuiteName]) {
-      this.write(formatWithColorConfig(
+      this.write(
         benchConfig.formatSuiteSummary(suites[currentSuiteName], benchConfig)
-      ));
+      );
     }
   };
 };

@@ -3,6 +3,7 @@
 var EOL = require("os").EOL;
 var _ = require("lodash");
 var stripAnsi = require("strip-ansi");
+var formatWithColorConfig = require("./helpers").formatWithColorConfig;
 
 /**
  * @param  {Object} fastest the fastest benchmark
@@ -124,7 +125,10 @@ var formatSuiteSummary = function (suite, benchConfig) {
     return browserBenchmark.benchmark;
   });
 
-  return getFormattedSuiteSummary(benchmarks, benchConfig);
+  return formatWithColorConfig(
+    getFormattedSuiteSummary(benchmarks, benchConfig),
+    benchConfig
+  );
 };
 
 module.exports = formatSuiteSummary;
