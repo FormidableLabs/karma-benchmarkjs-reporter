@@ -25,7 +25,7 @@ var getFormattedSuiteName = function (suiteName, terminalWidth, style) {
  */
 var formatSuiteHeading = function (suiteName, browser, benchConfig) {
   var suiteHeading = getFormattedSuiteName(suiteName, benchConfig.terminalWidth, benchConfig.style);
-  return formatWithColorConfig(EOL + suiteHeading + EOL);
+  return formatWithColorConfig(EOL + suiteHeading + EOL, benchConfig);
 };
 
 module.exports = formatSuiteHeading;

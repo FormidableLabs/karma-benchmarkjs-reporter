@@ -63,7 +63,7 @@ var getFormattedSuiteSummary = function (benchmarks, benchConfig) {
  */
 var getBenchmarksByBrowser = function (suite) {
   return suite.reduce(function (acc, browserBenchmark) {
-    var browser = browserBenchmark.browser;
+    var browser = browserBenchmark.browser.name;
     var benchmark = browserBenchmark.benchmark;
 
     acc[browser] = acc[browser] || [];

@@ -18,7 +18,11 @@
   "homepage": "https://github.com/formidablelabs/karma-benchmarkjs-reporter",
   "scripts": {
     "preversion": "npm test",
-    "test": "eslint src"
+    "lint": "concurrently --raw --kill-others 'npm run lint-src' 'npm run lint-spec'",
+    "lint-src": "eslint --color --ext .js src",
+    "lint-spec": "eslint --color --ext .js test",
+    "test": "npm run lint && npm run test-spec",
+    "test-spec": "mocha --bail --reporter spec 'test/**/*.spec.js'"
   },
   "keywords": [
     "karma",
@@ -33,9 +37,13 @@
     "strip-ansi": "^3.0.1"
   },
   "devDependencies": {
+    "chai": "^3.5.0",
+    "concurrently": "^2.2.0",
     "eslint": "^2.10.2",
     "eslint-config-formidable": "^1.0.1",
     "eslint-plugin-filenames": "^1.1.0",
-    "eslint-plugin-import": "^1.14.0"
+    "eslint-plugin-import": "^1.14.0",
+    "mocha": "^3.0.2",
+    "sinon": "^1.17.6"
   }
 }

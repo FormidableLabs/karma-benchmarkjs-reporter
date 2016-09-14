@@ -9,7 +9,7 @@ var style = require("./formatting/style");
 var BenchmarkReporter = function BenchmarkReporter(baseReporterDecorator, config) {
   baseReporterDecorator(this);
 
-  var benchConfig = _.defaultsDeep(config.benchmarkReporter, {
+  this.benchConfig = _.defaultsDeep(config.benchmarkReporter, {
     colors: config.colors,
     style: style,
     decorator: "-",
@@ -37,29 +37,29 @@ var BenchmarkReporter = function BenchmarkReporter(baseReporterDecorator, config
     });
 
     if (suiteName !== currentSuiteName) {
-      if (benchConfig.showSuiteSummary && suites[currentSuiteName]) {
+      if (this.benchConfig.showSuiteSummary && suites[currentSuiteName]) {
         this.write(
-          benchConfig.formatSuiteSummary(suites[currentSuiteName], benchConfig)
+          this.benchConfig.formatSuiteSummary(suites[currentSuiteName], this.benchConfig)
         );
       }
 
       currentSuiteName = suiteName;
 
       this.write(
-        benchConfig.formatSuiteHeading(suiteName, browser, benchConfig)
+        this.benchConfig.formatSuiteHeading(suiteName, browser, this.benchConfig)
       );
     }
 
     this.write(
-      benchConfig.formatBenchmark(benchmark, browser, benchConfig)
+      this.benchConfig.formatBenchmark(benchmark, browser, this.benchConfig)
     );
   };
 
   this.onRunComplete = function () {
     // run last suite summary
-    if (benchConfig.showSuiteSummary && suites[currentSuiteName]) {
+    if (this.benchConfig.showSuiteSummary && suites[currentSuiteName]) {
       this.write(
-        benchConfig.formatSuiteSummary(suites[currentSuiteName], benchConfig)
+        this.benchConfig.formatSuiteSummary(suites[currentSuiteName], this.benchConfig)
       );
     }
   };
