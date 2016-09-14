@@ -44,8 +44,8 @@ var getFormattedHzUnits = function (units, style) {
 /**
  * @param  {string} browserName the name of the browser
  * @param  {number} browserWidth the target width of the formatted browser name
- * @return {string} the formatted browser name
  * @param {Object} style object containing wrapper functions (e.g., chalk functions)
+ * @return {string} the formatted browser name
  * @private
  */
 var getFormattedBrowserName = function (browserName, browserWidth, style) {

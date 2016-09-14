@@ -7,7 +7,7 @@ npm install karma-benchmark karma-benchmarkjs-reporter --save-dev
 ```
 
 ## Karma Configuration
-Add `benchmark` to your `frameworks` and `reporters` arrays. Optionally, specify
+Add `benchmark` to your `frameworks` and `reporters` arrays. Optionally, specify a `benchmarkReporter` config object:
 ```js
 module.exports = function(config) {
   config.set({
@@ -54,7 +54,7 @@ This value is inherited from Karma, but you can override it by specifying a bool
 }
 ```
 
-The style object contains the styling functions for piece of data. The default uses [`chalk`](https://github.com/chalk/chalk) for styling and color.
+The style object contains the styling functions for each piece of data. The default uses [`chalk`](https://github.com/chalk/chalk) for styling and color.
 
 #### `decorator`
 *default:* `"-"`
