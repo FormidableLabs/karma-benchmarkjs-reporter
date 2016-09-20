@@ -5,16 +5,19 @@ var formatSuiteSummary = require("../../../src/formatting/format-suite-summary")
 var sampleData = require("../sample-data");
 
 describe("formatSuiteSummary()", function () {
+  var suite;
+  var benchConfig;
+
   beforeEach(function () {
     var NUM_BENCHMARKS = 6;
     var NUM_BROWSERS = 2;
-    this.suite = sampleData.getSuite(NUM_BENCHMARKS, NUM_BROWSERS);
-    this.benchConfig = sampleData.getBenchConfig();
+    suite = sampleData.getSuite(NUM_BENCHMARKS, NUM_BROWSERS);
+    benchConfig = sampleData.getBenchConfig();
   });
 
   it("should format the suite summary", function () {
     var formattedSuiteSummary = formatSuiteSummary(
-      this.suite, this.benchConfig
+      suite, benchConfig
     );
     expect(formattedSuiteSummary).to.equal(
       EOL + "     \u001b[4mbenchmark 5\u001b[24m was \u001b[1m\u001b[4m1.25" +
@@ -23,9 +26,9 @@ describe("formatSuiteSummary()", function () {
   });
 
   it("should format the suite summary with browser", function () {
-    this.benchConfig.showBrowser = true;
+    benchConfig.showBrowser = true;
     var formattedSuiteSummary = formatSuiteSummary(
-      this.suite, this.benchConfig
+      suite, benchConfig
     );
     expect(formattedSuiteSummary).to.equal(
       EOL + "\u001b[34m[PhantomJS 2.1.1 (Mac OS X 0.0.0)]      \u001b[39m" + EOL +
@@ -38,10 +41,10 @@ describe("formatSuiteSummary()", function () {
   });
 
   it("should strip colors if colors set to false", function () {
-    this.benchConfig.colors = true;
-    var summaryWithColor = formatSuiteSummary(this.suite, this.benchConfig);
-    this.benchConfig.colors = false;
-    var summaryWithoutColor = formatSuiteSummary(this.suite, this.benchConfig);
+    benchConfig.colors = true;
+    var summaryWithColor = formatSuiteSummary(suite, benchConfig);
+    benchConfig.colors = false;
+    var summaryWithoutColor = formatSuiteSummary(suite, benchConfig);
     expect(summaryWithoutColor).to.equal(chalk.stripColor(summaryWithColor));
   });
 });
