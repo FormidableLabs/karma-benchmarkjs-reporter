@@ -3,6 +3,7 @@
 var EOL = require("os").EOL;
 var _ = require("lodash");
 var stripAnsi = require("strip-ansi");
+var formatWithColorConfig = require("./helpers").formatWithColorConfig;
 
 /**
  * @param  {string} decorator the decorator symbol e.g., "-"
@@ -101,7 +102,10 @@ var formatBenchmark = function (benchmark, browser, benchConfig) {
     style
   );
 
-  return decorator + benchmarkName + hz + hzUnits + browserName + EOL;
+  return formatWithColorConfig(
+    decorator + benchmarkName + hz + hzUnits + browserName + EOL,
+    benchConfig
+  );
 };
 
 module.exports = formatBenchmark;

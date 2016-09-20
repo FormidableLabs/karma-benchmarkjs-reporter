@@ -2,6 +2,7 @@
 
 var EOL = require("os").EOL;
 var _ = require("lodash");
+var formatWithColorConfig = require("./helpers").formatWithColorConfig;
 
 /**
  * @param  {string} suiteName name of performance suite
@@ -24,7 +25,7 @@ var getFormattedSuiteName = function (suiteName, terminalWidth, style) {
  */
 var formatSuiteHeading = function (suiteName, browser, benchConfig) {
   var suiteHeading = getFormattedSuiteName(suiteName, benchConfig.terminalWidth, benchConfig.style);
-  return EOL + suiteHeading + EOL;
+  return formatWithColorConfig(EOL + suiteHeading + EOL, benchConfig);
 };
 
 module.exports = formatSuiteHeading;

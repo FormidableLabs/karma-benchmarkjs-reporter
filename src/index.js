@@ -1,7 +1,6 @@
 "use strict";
 
 var _ = require("lodash");
-var chalk = require("chalk");
 var formatBenchmark = require("./formatting/format-benchmark");
 var formatSuiteHeading = require("./formatting/format-suite-heading");
 var formatSuiteSummary = require("./formatting/format-suite-summary");
@@ -10,7 +9,7 @@ var style = require("./formatting/style");
 var BenchmarkReporter = function BenchmarkReporter(baseReporterDecorator, config) {
   baseReporterDecorator(this);
 
-  var benchConfig = _.defaultsDeep(config.benchmarkReporter, {
+  this.benchConfig = _.defaultsDeep(config.benchmarkReporter, {
     colors: config.colors,
     style: style,
     decorator: "-",
@@ -25,12 +24,6 @@ var BenchmarkReporter = function BenchmarkReporter(baseReporterDecorator, config
     formatSuiteSummary: formatSuiteSummary
   });
 
-  var formatWithColorConfig = function (string) {
-    return !benchConfig.colors
-      ? chalk.stripColor(string)
-      : string;
-  };
-
   var suites = {};
   var currentSuiteName = "";
   this.specSuccess = function (browser, result) {
@@ -44,30 +37,30 @@ var BenchmarkReporter = function BenchmarkReporter(baseReporterDecorator, config
     });
 
     if (suiteName !== currentSuiteName) {
-      if (benchConfig.showSuiteSummary && suites[currentSuiteName]) {
-        this.write(formatWithColorConfig(
-          benchConfig.formatSuiteSummary(suites[currentSuiteName], benchConfig)
-        ));
+      if (this.benchConfig.showSuiteSummary && suites[currentSuiteName]) {
+        this.write(
+          this.benchConfig.formatSuiteSummary(suites[currentSuiteName], this.benchConfig)
+        );
       }
 
       currentSuiteName = suiteName;
 
-      this.write(formatWithColorConfig(
-        benchConfig.formatSuiteHeading(suiteName, browser, benchConfig)
-      ));
+      this.write(
+        this.benchConfig.formatSuiteHeading(suiteName, browser, this.benchConfig)
+      );
     }
 
-    this.write(formatWithColorConfig(
-      benchConfig.formatBenchmark(benchmark, browser, benchConfig)
-    ));
+    this.write(
+      this.benchConfig.formatBenchmark(benchmark, browser, this.benchConfig)
+    );
   };
 
   this.onRunComplete = function () {
     // run last suite summary
-    if (benchConfig.showSuiteSummary && suites[currentSuiteName]) {
-      this.write(formatWithColorConfig(
-        benchConfig.formatSuiteSummary(suites[currentSuiteName], benchConfig)
-      ));
+    if (this.benchConfig.showSuiteSummary && suites[currentSuiteName]) {
+      this.write(
+        this.benchConfig.formatSuiteSummary(suites[currentSuiteName], this.benchConfig)
+      );
     }
   };
 };
