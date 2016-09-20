@@ -2,7 +2,7 @@ var _ = require("lodash");
 var style = require("../../src/formatting/style");
 
 var getBenchConfig = function () {
-  return _.clone({
+  return {
     colors: true,
     style: style,
     decorator: "-",
@@ -12,7 +12,7 @@ var getBenchConfig = function () {
     browserWidth: 40,
     showBrowser: false,
     showSuiteSummary: false
-  });
+  };
 };
 
 var getSuiteName = function (index) {
