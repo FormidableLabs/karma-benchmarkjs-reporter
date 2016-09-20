@@ -1,3 +1,5 @@
+// TODO: Implement tests
+// https://github.com/FormidableLabs/karma-benchmarkjs-reporter/issues/6
 describe("index", function () {
   it("writes out formatted suite headings as they change");
 
