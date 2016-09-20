@@ -32,7 +32,7 @@ var getBrowsers = function (qty) {
   qty = qty || 1;
   qty = Math.min(qty, browsers.length);
 
-  return qty === 1 ? browsers[0] : browsers.slice(0, qty);
+  return browsers.slice(0, qty);
 };
 
 var getBenchmark = function (index, suiteIndex) {
