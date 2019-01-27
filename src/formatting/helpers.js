@@ -1,11 +1,9 @@
 "use strict";
 
-var chalk = require("chalk");
+var stripAnsi = require("strip-ansi");
 
 var formatWithColorConfig = function (string, benchConfig) {
-  return !benchConfig.colors
-    ? chalk.stripColor(string)
-    : string;
+  return !benchConfig.colors ? stripAnsi(string) : string;
 };
 
 module.exports = {

@@ -12,9 +12,7 @@ var formatWithColorConfig = require("./helpers").formatWithColorConfig;
  * @private
  */
 var getFormattedDecorator = function (decorator, style) {
-  return style.decorator(
-    decorator + " "
-  );
+  return style.decorator(decorator + " ");
 };
 
 /**
@@ -25,9 +23,7 @@ var getFormattedDecorator = function (decorator, style) {
  * @private
  */
 var getFormattedHz = function (hz, hzWidth, style) {
-  return style.hz(
-    _.padStart(Math.round(hz), hzWidth)
-  );
+  return style.hz(_.padStart(Math.round(hz), hzWidth));
 };
 
 /**
@@ -37,9 +33,7 @@ var getFormattedHz = function (hz, hzWidth, style) {
  * @private
  */
 var getFormattedHzUnits = function (units, style) {
-  return style.hzUnits(
-    " " + units + " "
-  );
+  return style.hzUnits(" " + units + " ");
 };
 
 /**
@@ -50,9 +44,7 @@ var getFormattedHzUnits = function (units, style) {
  * @private
  */
 var getFormattedBrowserName = function (browserName, browserWidth, style) {
-  return style.browser(
-    _.padStart("[" + browserName + "]", browserWidth)
-  );
+  return style.browser(_.padStart("[" + browserName + "]", browserWidth));
 };
 
 /**
@@ -63,9 +55,7 @@ var getFormattedBrowserName = function (browserName, browserWidth, style) {
  * @private
  */
 var getFormattedBenchmarkName = function (benchmarkName, benchmarkWidth, style) {
-  return style.benchmark(
-    _.padEnd(benchmarkName, benchmarkWidth)
-  );
+  return style.benchmark(_.padEnd(benchmarkName, benchmarkWidth));
 };
 
 /**
@@ -96,9 +86,7 @@ var formatBenchmark = function (benchmark, browser, benchConfig) {
     : "";
   var benchmarkName = getFormattedBenchmarkName(
     benchmark.name,
-    getRemainingWidth(benchConfig.terminalWidth, [
-      decorator, hz, hzUnits, browserName
-    ]),
+    getRemainingWidth(benchConfig.terminalWidth, [decorator, hz, hzUnits, browserName]),
     style
   );
 
