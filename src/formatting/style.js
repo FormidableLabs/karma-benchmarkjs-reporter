@@ -1,9 +1,10 @@
 "use strict";
 
 var chalk = require("chalk");
+var stripAnsi = require("strip-ansi");
 
 module.exports = {
-  benchmark: chalk.stripColor,
+  benchmark: stripAnsi,
   summaryBenchmark: chalk.underline,
   summaryEmphasis: chalk.bold.underline,
   browser: chalk.blue,
