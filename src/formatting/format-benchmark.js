@@ -23,7 +23,7 @@ var getFormattedDecorator = function (decorator, style) {
  * @private
  */
 var getFormattedHz = function (hz, hzWidth, style) {
-  return style.hz(_.padStart(Math.round(hz), hzWidth));
+  return style.hz(_.padStart(Math.round(hz), hzWidth).toLocaleString());
 };
 
 /**
